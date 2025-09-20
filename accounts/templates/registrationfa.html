@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body>
+  {% load widget_tweaks %}
+  <div class="bg-white min-h-screen flex items-center justify-center p-6">
+
+<form method="post" class="max-w-5xl w-1/2 mx-auto flex md:flex-col bg-white p-6 shadow-lg rounded-xl">
+    {% csrf_token %}
+    <div class="flex flex-row gap-3">
+    <div class="mb-4 w-1/2 flex flex-col">
+        <label class="block text-sm font-medium mb-1">Username:</label>
+        {{ form.username|add_class:"border border-gray-300 p-2 rounded-md w-full focus:ring-2 focus:ring-blue-500" }}
+         {% if form.username.errors %}
+            <p class="text-red-500 text-sm">{{ form.username.errors.0 }}</p>
+        {% endif %}
+    </div>
+    <div class="mb-4 w-1/2">
+        <label class="block text-sm font-medium mb-1">Email:</label>
+        {{ form.email|add_class:"w-full p-2 px-4 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-lime-500" }}
+            {% if form.email.errors %}
+            <p class="text-red-500 text-sm">{{ form.email.errors.0 }}</p>
+        {% endif %}
+    </div>
+    </div>
+    <div class="flex flex-row gap-3">
+    <div class="mb-4 w-1/2 ">
+        <label class="block text-sm font-medium mb-1">Password</label>
+        {{ form.password|add_class:"border border-gray-300 p-2 rounded-md w-full focus:ring-2 focus:ring-indigo-500" }}
+    </div>
+    <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">First Name:</label>
+        {{ form.first_name|add_class:"border border-gray-300 p-2 rounded-md w-full focus:ring-2 focus:ring-purple-500" }}
+    </div>
+    </div>
+    <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Last Name:</label>
+        {{ form.last_name|add_class:"border border-gray-300 p-2 rounded-md w-full focus:ring-2 focus:ring-purple-500" }}
+    </div>
+    <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Registration Number:</label>
+        {{ form.employee_id|add_class:"border border-gray-300 p-2 rounded-md w-full focus:ring-2 focus:ring-purple-500" }}
+    </div>
+    <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Course:</label>
+        {{ form.faculty_department|add_class:"border border-gray-300 p-2 rounded-md w-full focus:ring-2 focus:ring-purple-500" }}
+    </div>
+    <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Department:</label>
+        {{ form.designation|add_class:"border border-gray-300 p-2 rounded-md w-full focus:ring-2 focus:ring-purple-500" }}
+    </div>
+  
+    <button type="submit" 
+        class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700" value="Submit">
+        Submit
+    </button>
+</form>
+
+</div>
+    
+</body>
+</html>
