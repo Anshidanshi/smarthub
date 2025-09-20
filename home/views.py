@@ -1,6 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-def home(request):
-    return HttpResponse("Welcome to Smart Home Page")
+def StudentDashboard(request,pk):
+    pass
+
+def FacultyDashboard(request,pk):
+    pass

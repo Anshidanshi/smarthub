@@ -1,11 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic.edit import CreateView
 from accounts.models import CustomUser
 from django.contrib.auth.hashers import make_password
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import authenticate,login as login_auth
+from django.contrib.auth import authenticate,login as login_auth,logout
 from django.contrib import messages
 # Create your views here.
 class StudentCreation(CreateView):
@@ -18,7 +18,7 @@ class StudentCreation(CreateView):
         user=form.save(commit=False)
         user.role='student'
         user.password=make_password(form.cleaned_data["password"])
-        user.is_approved=True
+        user.is_approved=False
         user.save()
         return super().form_valid(form)
 
@@ -66,3 +66,7 @@ def login_(request):
         else:
             messages.error(request, f"invalid username or password")
     return render(request, 'login.html')
+
+def Log_out(request):
+    logout(request)
+    return redirect('login')
