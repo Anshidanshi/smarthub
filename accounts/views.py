@@ -18,7 +18,7 @@ class StudentCreation(CreateView):
         user=form.save(commit=False)
         user.role='student'
         user.password=make_password(form.cleaned_data["password"])
-        user.is_approved=False
+        user.is_approved=True
         user.save()
         return super().form_valid(form)
 

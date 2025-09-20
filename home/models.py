@@ -34,6 +34,6 @@ class Subject(models.Model):
         return self.name
 
 class Academic(models.Model):
-    user=models.ForeignKey("accounts.CustomUser", verbose_name=_(""), on_delete=models.CASCADE)
-    subject=models.ForeignKey("Subject", verbose_name=_(""), on_delete=models.CASCADE)
+    user=models.ForeignKey("accounts.CustomUser", verbose_name=(""), on_delete=models.CASCADE)
+    subject=models.ForeignKey("Subject", verbose_name=(""), on_delete=models.CASCADE)
     cgpa=models.IntegerField()
