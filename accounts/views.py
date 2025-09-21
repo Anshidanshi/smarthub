@@ -1,10 +1,11 @@
+from urllib import request
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.views.generic.edit import CreateView
 from accounts.models import CustomUser
 from django.contrib.auth.hashers import make_password
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.contrib.auth import authenticate,login as login_auth,logout
 from django.contrib import messages
 # Create your views here.
@@ -13,7 +14,11 @@ class StudentCreation(CreateView):
     fields=['username','email','password','first_name','last_name','reg_no','course','department','year_of_study']
     template_name='registration.html'
     success_url=reverse_lazy("login")
-
+    
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+           return redirect('home:home',pk=request.user.username)  # <-- Redirect here
+        return super().dispatch(request, *args, **kwargs)
     def form_valid(self, form):
         user=form.save(commit=False)
         user.role='student'
@@ -27,6 +32,16 @@ class FacultyCreation(LoginRequiredMixin,CreateView):
     fields=['username','email','password','first_name','last_name','employee_id','faculty_department','designation']
     template_name='registrationfa.html'
     success_url=reverse_lazy("login")
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            username = request.user.username
+            if not username:
+            # Handle the case where the username is empty or None
+                return redirect('login')  # Or another valid fallback
+            return redirect('home:home', pk=username)
+        return super().dispatch(request, *args, **kwargs)
+
 
     def form_valid(self, form):
         if CustomUser.objects.filter(username=form.cleaned_data['username']).exists():
@@ -47,6 +62,7 @@ class FacultyCreation(LoginRequiredMixin,CreateView):
 
 def login_(request):
     if request.user.is_authenticated:
+        return redirect('home:home',pk=request.user.username)
         
         return HttpResponse(f"welcome {request.user.username}")
     if request.method == "POST":
@@ -57,10 +73,11 @@ def login_(request):
 
         if user is not None:
             login_auth(request,user)
-            messages.success(request, f"welcome {user.username}")
+            #messages.success(request, f"welcome {user.username}")
+            #return redirect('home:home',pk=username)
             
             if user.role=='student':
-                return HttpResponse(f"welcome student {user.username}")
+                return redirect('home:home',pk=username)
             else:
                 return HttpResponse("ksdf")
         else:
