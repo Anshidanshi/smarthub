@@ -156,6 +156,67 @@
     </div>
     
 </section>
+<section class="my-10 flex md:flex-row flex-col justify-center item-center gap-5 mx-10 h-auto ">
+    <div class="w-1/2 rounded-lg flex flex-col shadow-xl bg-white-600 gap-2">
+       <div class="flex flex-row">
+        <div>
+          
+         <h1 class="text-2xl font-bold mt-5 mx-5 flex flex-row gap-3">
+          <div><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-file-earmark-medical" viewBox="0 0 16 16">
+  <path d="M7.5 5.5a.5.5 0 0 0-1 0v.634l-.549-.317a.5.5 0 1 0-.5.866L6 7l-.549.317a.5.5 0 1 0 .5.866l.549-.317V8.5a.5.5 0 1 0 1 0v-.634l.549.317a.5.5 0 1 0 .5-.866L8 7l.549-.317a.5.5 0 1 0-.5-.866l-.549.317zm-2 4.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+  <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+</svg></div>
+          <div>Recent Achievements</div>
+         
+          </h1>
+          <div class="mx-6 text-gray-600">Your recent verified achievements will appear here.</div>
+        </div>
+        <div class="ml-auto mt-5 mb-8 mx-5">
+            <a href="{% url 'home:activity_upload' %}" class="text-blue-600 inline-block border border-blue-600 rounded px-4 py-2 hover:bg-blue-600 hover:text-white">+ Add New</a>
+       </div>
+    </div>
+
+    <!-- cards -->
+    {% for i in Achievements %}
+    <div class="border border-gray-300 mx-5 rounded-lg p-8 flex flex-row item-center ">
+            <div class="flex flex-col gap-1">
+            <div class="text-lg">
+              {{i.title}}
+              <svg class=" inline text-green-500 ml-2" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+  <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
+  <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+</svg>
+            </div>
+            <div class="flex items-center">
+            <div class="inline text-blue-600 border rounded-2xl px-3 bg-blue-200 w-fit">{{i.category}}</div>
+          <svg class="inline text-blue-600 ml-2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar-check" viewBox="0 0 16 16">
+  <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+</svg><span class="text-gray-600">Issued on {{i.date}}</span>
+            </div>
+            <div>
+
+            </div>
+            <div class="text-gray-600">Verified by:{{i.faculty}}</div>
+            </div>
+            <div class="items-center ml-auto justify-center flex">
+          {% if i.status|lower == "approved" %}
+    <span class="text-green-800 bg-green-200 border border-green-800 rounded-2xl px-2">{{ i.status }}</span>
+{% else %}
+    <span class="text-red-800 bg-red-200 border border-red-800 rounded-2xl px-2">{{ i.status }}</span>
+{% endif %}
+
+            </div>
+            
+    </div>
+    {% endfor %}
+   
+    <div class="my-4">    </div>
+    </div>
+    <div class="w-1/2 bg-blue-200">2</div>
+  
+</section>
 </div>
+
 </body>
 </html>
