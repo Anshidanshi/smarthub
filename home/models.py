@@ -35,5 +35,9 @@ class Subject(models.Model):
 
 class Academic(models.Model):
     user=models.ForeignKey("accounts.CustomUser", verbose_name=(""), on_delete=models.CASCADE)
-    subject=models.ForeignKey("Subject", verbose_name=(""), on_delete=models.CASCADE)
+    Subject=models.ManyToManyField(Subject,related_name='sub')
+    #subject=models.M("Subject", verbose_name=(""), on_delete=models.CASCADE)
     cgpa=models.IntegerField()
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.cgpa} - {self.Subject.count()} subjects"

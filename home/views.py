@@ -5,6 +5,7 @@ from .models import *
 from accounts.models import CustomUser
 from django.db.models import Count
 from django.views.generic.edit import CreateView
+from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.urls import reverse_lazy
 # Create your views here.
@@ -22,14 +23,19 @@ def StudentDashboard(request,pk):
     print(num_achievements)
     print(pending_achievements)
     
+    academics=Academic.objects.get(user=user)
+    Subjects=academics.Subject.all()
+    print(Subjects)
+    
     if num_achievements == 0:
         return HttpResponse("No achievement found")
     context = {
         'user': user,
-        'Achievements':Achievements,
+        'Achievements':dashboard_stud,
         'num_achievements': num_achievements ,
         'pending_achievements': pending_achievements,
         'rejected_achievements': rejected_achievements,
+        'academics':academics,
     }
     return render(request,'student_dashbord.html',context)
 
@@ -46,7 +52,12 @@ class ActivityUpload(LoginRequiredMixin,CreateView):
         achieve.user = self.request.user
         achieve.save()
         return super().form_valid(form)
-    
+class CertificateView(LoginRequiredMixin,ListView):
+    model = Achievement
+    template_name = 'certification.html'
+    context_object_name = 'certificates'
+    def get_queryset(self):
+        return Achievement.objects.filter(user=self.request.user).order_by('-date')
 
 def FacultyDashboard(request,pk):
     pass
