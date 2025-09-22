@@ -15,3 +15,6 @@ class AchievementAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 admin.site.register(Achievement, AchievementAdmin)
+admin.site.register(Subject)
+admin.site.register(Academic)
+    
