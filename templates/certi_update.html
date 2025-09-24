@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+     {% load widget_tweaks %}
+    <h1>Certificate Update</h1>
+    <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- Title -->
+    {{ form.title|add_class:"border p-2 rounded w-full" }}
+    
+    <!-- Description -->
+    {{ form.description|add_class:"border p-2 rounded w-full" }}
+    
+    <!-- Date -->
+    {{ form.date|add_class:"border p-2 rounded w-full" }}
+    
+    <!-- Category -->
+    {{ form.category|add_class:"border p-2 rounded w-full" }}
+
+    <!-- File input with custom label -->
+    <label class="flex items-center gap-2 cursor-pointer bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">
+      {% if form.instance.document %}
+    <p>Current document: 
+        <a href="{{ form.instance.document.url }}" target="_blank">
+            {{ form.instance.document.name|slice:"13:" }}
+        </a>
+    </p>
+        {% endif %}
+        <span class="text-blue-600">Change Document</span>
+        {{ form.document|add_class:"hidden" }}
+        {% if form.document.errors %}
+            <div class="text-red-600 mt-1">
+                {{ form.document.errors }}
+            </div>
+{% endif %}
+
+
+    </label>
+
+    <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Upda
+te Certificate
+    </button>
+    </form>
+</body>
+</html>

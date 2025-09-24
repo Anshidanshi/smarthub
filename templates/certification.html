@@ -8,13 +8,13 @@
 </head>
 <body>
     <h1 class="text-3xl font-bold text-center my-5">My Certificates</h1>
-    <div class="flex flex-col gap-5">
+    <div class="flex flex-col gap-5 max-w-4xl mx-auto my-5 items-center">
     {% if certificates.count == 0 %}
         <p class="text-gray-500 text-center">No certificates found.</p>
     {% else %}
     {% endif %}
     {% for i in certificates %}
-     <div class="border border-gray-300 mx-5 rounded-lg p-8 flex flex-row item-center ">
+     <div class="border border-gray-300 mx-5 rounded-lg p-8 flex flex-row item-center w-1/2">
             <div class="flex flex-col gap-1">
             <div class="text-lg">
               {{i.title}}
@@ -34,6 +34,7 @@
 
             </div>
             <div class="text-gray-600">Verified by:{{i.faculty}}</div>
+            <div class="text-gray-600"><a href="{% url 'home:certificate_detail' i.pk %}">View Certificate</a></div>
             </div>
             <div class="items-center ml-auto justify-center flex">
 
@@ -44,5 +45,6 @@
             
     </div>
     {% endfor %}
+    </div>
 </body>
 </html>
