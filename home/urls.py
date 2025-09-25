@@ -7,5 +7,8 @@ urlpatterns = [
     path('certificates/', views.CertificateView.as_view(), name='certificates'),
     path('certificate/<int:pk>/', views.CertificatView.as_view(), name='certificate_detail'),
     path('certificate/<int:pk>/update/', views.CertificateUpdateView.as_view(), name='certificate_update'),
+    path('faculty/<str:pk>/',views.FacultyDashboard,name='faculty'),
+    path('certificate/approval/<int:pk>/',views.FacultyApprove,name='approve'),
+    path('certificate/reject/<int:pk>/',views.FacultyReject,name='reject')
 ]
 

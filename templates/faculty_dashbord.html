@@ -1,3 +1,5 @@
+{% load static %}
+  {% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="utf-8"/>
@@ -94,8 +96,8 @@
 <div class="flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbWrzntYPvOFg5ICjGCwFiRJhOVV4NNurwDPcyEZcJumN-DJkafFneVrtf1eJQtTIyIJJDKv4moNltuq1JVgtwCYixyDsupCUYw94XqWS0Jx0FE1NI5SjKAcurWMtO9oPtHW7Br0GmjL6Pp3W5fhbD0Yfs5mWIXF4mW9OdfCl6tkBiXOqH9vFW3mJl2ikQCJqO3j9HlCtNFNNtxILdnFPwj-xdPUwGFyq9YeaCJDEJ8qchazA_lWzRDBEC8JwTDfqkO2Gk9xy48qY");'></div>
 <div>
-<p class="text-sm font-medium text-gray-800 dark:text-white">Dr. Eleanor Bennett</p>
-<p class="text-xs text-gray-500 dark:text-gray-400">Faculty</p>
+<p class="text-sm font-medium text-gray-800 dark:text-white">{{faculty.username}}</p>
+<p class="text-xs text-gray-500 dark:text-gray-400">{{faculty.department}}</p>
 </div>
 </div>
 </div>
@@ -113,15 +115,17 @@
 </tr>
 </thead>
 <tbody>
+  {% for s in pending_count %}
 <tr class="bg-background-light dark:bg-background-dark border-b dark:border-gray-700">
-<th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">Ethan Harper</th>
-<td class="px-6 py-4">National Debate Competition Winner</td>
-<td class="px-6 py-4">2023-09-15</td>
+<th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">{{ s.user.username }}</th>
+<td class="px-6 py-4">{{ s.title }}</td>
+<td class="px-6 py-4">{{ s.date }}</td>
 <td class="px-6 py-4 flex justify-center gap-2">
-<button class="px-3 py-1 text-xs font-medium text-white bg-primary rounded-full hover:bg-primary/90">Approve</button>
+<button class="px-3 py-1 text-xs font-medium text-white bg-primary rounded-full hover:bg-primary/90"><a href="{% url 'home:approve' s.id %}">approve </a></button>
 <button class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">Reject</button>
 </td>
 </tr>
+  {% endfor %}
 <tr class="bg-background-light dark:bg-background-dark border-b dark:border-gray-700">
 <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">Olivia Carter</th>
 <td class="px-6 py-4">Published Research Paper</td>
@@ -165,38 +169,38 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 <div class="bg-background-light dark:bg-background-dark rounded-xl shadow-sm p-6">
 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Achievements</p>
-<p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">150</p>
+<p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">{{total}}</p>
 </div>
 <div class="bg-background-light dark:bg-background-dark rounded-xl shadow-sm p-6">
 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Approved</p>
-<p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">120</p>
+<p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">{{approved}}</p>
 </div>
 <div class="bg-background-light dark:bg-background-dark rounded-xl shadow-sm p-6">
 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Pending</p>
-<p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">30</p>
+<p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">{{pendeing|default:0}}</p>
 </div>
 </div>
 <h2 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-6">NAAC Report Preview</h2>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
 <div class="bg-primary/10 dark:bg-primary/20 rounded-xl p-6 text-center">
-<p class="text-sm font-medium text-primary dark:text-primary">Workshops</p>
-<p class="text-3xl font-bold text-primary dark:text-primary mt-1">25</p>
+<p class="text-sm font-medium text-primary dark:text-primary">{{a.0.category}}</p>
+<p class="text-3xl font-bold text-primary dark:text-primary mt-1">{{a.0.total}}</p>
 </div>
 <div class="bg-primary/10 dark:bg-primary/20 rounded-xl p-6 text-center">
-<p class="text-sm font-medium text-primary dark:text-primary">Conferences</p>
-<p class="text-3xl font-bold text-primary dark:text-primary mt-1">15</p>
+<p class="text-sm font-medium text-primary dark:text-primary">{{a.1.category}}</p>
+<p class="text-3xl font-bold text-primary dark:text-primary mt-1">{{a.1.total}}</p>
 </div>
 <div class="bg-primary/10 dark:bg-primary/20 rounded-xl p-6 text-center">
-<p class="text-sm font-medium text-primary dark:text-primary">Research Papers</p>
-<p class="text-3xl font-bold text-primary dark:text-primary mt-1">40</p>
+<p class="text-sm font-medium text-primary dark:text-primary">{{a.2.category}}</p>
+<p class="text-3xl font-bold text-primary dark:text-primary mt-1">{{a.2.total}}</p>
 </div>
 <div class="bg-primary/10 dark:bg-primary/20 rounded-xl p-6 text-center">
-<p class="text-sm font-medium text-primary dark:text-primary">Competitions</p>
-<p class="text-3xl font-bold text-primary dark:text-primary mt-1">30</p>
+<p class="text-sm font-medium text-primary dark:text-primary">{{a.3.category}}</p>
+<p class="text-3xl font-bold text-primary dark:text-primary mt-1">{{a.3.total}}</p>
 </div>
 <div class="bg-primary/10 dark:bg-primary/20 rounded-xl p-6 text-center">
 <p class="text-sm font-medium text-primary dark:text-primary">Approved/Pending</p>
-<p class="text-3xl font-bold text-primary dark:text-primary mt-1">120/30</p>
+<p class="text-3xl font-bold text-primary dark:text-primary mt-1">{{ap.0.total}}/{{ap.1.total|default:0}}</p>
 </div>
 </div>
 </main>

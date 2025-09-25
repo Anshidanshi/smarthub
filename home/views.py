@@ -95,4 +95,41 @@ class CertificateUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
         return False
 
 def FacultyDashboard(request,pk):
-    pass
+    if request.user.username != pk:
+        return HttpResponse('you don;t have the permission')
+    pend=Achievement.objects.filter(status='pending')
+    context = {
+        'faculty':request.user,
+        'pending_count':pend,
+        'total':Achievement.objects.filter().exclude(status='rejected').count(),
+        'approved':Achievement.objects.filter(status='approved').count(),
+        'pendeing':Achievement.objects.filter(status='pending').count(),
+        'a':Achievement.objects.values('category').annotate(total=Count('id')),
+        'ap':Achievement.objects.filter().exclude(status='rejected').values('status').annotate(total=Count('id'))
+        
+        
+    }
+    print(context)
+    
+    return render(request,'faculty_dashbord.html',context)
+def FacultyApprove(request,pk):
+    achievement=get_object_or_404(Achievement,pk=pk)
+    users=request.user
+    if request.user != users.role=='Faculty':
+        return HttpResponse('you dont have the access')
+    if achievement.status != 'rejected': 
+        return HttpResponse('This achievement has already been reviewed.')
+    achievement.faculty=request.user
+    achievement.status='approved'
+    achievement.save()
+    return HttpResponse('approved')
+
+def FacultyReject(request,pk):
+    achieve=get_object_or_404(Achievement,pk=pk)
+    if request.user != request.user.role == 'Faculty':
+        return HttpResponse('you have no access')
+    achieve.faculty=request.user
+    achieve.status='rejected'
+    achieve.save()
+    return HttpResponse(f"{achieve.title} rejected successfully")
+    
