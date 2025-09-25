@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+{{ certificate.title }}
+{{ certificate.category }}
+{{ certificate.date }}
+{{ certificate.faculty }}
+{{ certificate.status }}
+<a href="{{ certificate.document.url }}">Download Certificate</a>
+<br>
+
+<a href="{% url 'home:certificates' %}">Back to Certificates</a>
+
+
+</body>
+</html>

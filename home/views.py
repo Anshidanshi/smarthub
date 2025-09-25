@@ -4,10 +4,12 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from accounts.models import CustomUser
 from django.db.models import Count
-from django.views.generic.edit import CreateView
-from django.views.generic import ListView
+from django.views.generic.edit import CreateView,UpdateView
+from django.views.generic import ListView,DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
+
 # Create your views here.
 def StudentDashboard(request,pk):
     if request.user.username != pk:
@@ -58,6 +60,39 @@ class CertificateView(LoginRequiredMixin,ListView):
     context_object_name = 'certificates'
     def get_queryset(self):
         return Achievement.objects.filter(user=self.request.user).order_by('-date')
+
+class CertificatView(LoginRequiredMixin,DetailView):
+    model = Achievement
+    template_name = 'certificationview.html'
+    context_object_name = 'certificate'
+    login_url = 'accounts:login'
+    # <-- Redirect here
+       
+    def get_object(self, queryset=None):
+        # Fetch the object based on pk from URL
+        obj = get_object_or_404(Achievement, pk=self.kwargs['pk'])
+        
+        # Check if the logged-in user owns this achievement
+        if obj.user != self.request.user:
+            # You can return a 403 forbidden or redirect
+            return HttpResponse("You don't have permission to view this.")
+        
+        return obj
+
+class CertificateUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = Achievement
+    fields = ['title', 'description', 'date', 'document', 'category']
+    template_name = 'certi_update.html'
+    #success_url = reverse_lazy('home:home', kwargs={'pk': request.user.username})
+    
+    def get_success_url(self):
+        return reverse_lazy('home:home', kwargs={'pk': self.request.user.username})
+    
+    def test_func(self):
+        achievement = self.get_object()
+        if self.request.user == achievement.user:
+            return True
+        return False
 
 def FacultyDashboard(request,pk):
     pass
